@@ -1,0 +1,174 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+h1 {
+    color: #333;
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #444;
+}
+
+/* Menu Styling */
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.menu-item button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.menu-item button:hover {
+    background-color: #45a049;
+}
+
+/* Cart Styling */
+#cart-items {
+    margin-bottom: 15px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+#cart-total {
+    text-align: right;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+#order-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#order-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Status Styling */
+.hidden {
+    display: none;
+}
+
+#order-status {
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+}
+
+/* Adding to existing CSS */
+
+/* Category Buttons */
+#filter-section {
+    margin-bottom: 20px;
+}
+
+.category-btn {
+    padding: 8px 16px;
+    margin: 0 5px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.category-btn.active {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+/* Quantity Controls */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantity-btn {
+    padding: 2px 8px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.quantity-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.quantity-display {
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Menu Item Updates */
+.menu-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item-category {
+    font-size: 0.8em;
+    color: #666;
+}

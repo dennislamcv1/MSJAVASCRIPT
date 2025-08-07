@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BiteBridge Test Suite</title>
+    <!-- <link rel="stylesheet" href="../css/styles.css"> Styles not strictly needed for these logic tests -->
+
+    <!-- Test Framework -->
+    <script src="setup.js"></script>
+
+    <!-- Application Code (Order Matters for global functions) -->
+    <!-- These make your app's functions available to the tests -->
+    <script src="../js/modules/errors.js"></script>
+    <script src="../js/data/menu-data.js"></script>
+    <!-- Defines global menu, categories -->
+    <script src="../js/modules/cart.js"></script>
+    <!-- Defines cart logic, including new TDD functions -->
+    <script src="../js/modules/menu.js"></script>
+    <!-- Defines menu logic -->
+    <!-- app.js is not strictly needed for these unit tests as they don't test DOMContentLoaded listeners directly -->
+
+    <!-- Your Test Files (Order them if one depends on another, though ideally they are independent) -->
+    <script src="cart.test.js"></script>
+    <script src="menu.test.js"></script>
+  </head>
+  <body>
+    <h1>BiteBridge Test Runner</h1>
+    <p>Open the browser's Developer Console to see test outputs.</p>
+    <p>
+      After the page loads, type <code>runTests()</code> in the console and press Enter to execute
+      the tests.
+    </p>
+
+    <button onclick="runTests()">Run Tests Manually</button>
+
+    <div id="test-results-summary">
+      <!-- Summary could be written here by an enhanced runTests() -->
+    </div>
+
+    <!-- Minimal DOM structure if needed for certain menu.js tests, hidden -->
+    <div id="app-container-for-dom-tests" style="display: none">
+      <div id="category-buttons"></div>
+      <div id="menu-items"></div>
+    </div>
+
+    <script>
+      // Optional: Automatically run tests on load
+      // window.onload = function() {
+      //     console.log("All scripts loaded. Auto-running tests...");
+      //     runTests();
+      // };
+      // For this lab, manual run via console or button is fine to ensure all scripts are parsed.
+    </script>
+  </body>
+</html>

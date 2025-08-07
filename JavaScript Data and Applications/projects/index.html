@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BiteBridge Restaurant Ordering</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Link to your types for JSDoc, if your setup benefits from it (usually not directly linked) -->
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <h1>BiteBridge Restaurant</h1>
+      </header>
+
+      <div id="error-container" class="error-container" aria-live="assertive">
+        <!-- Error messages will be displayed here -->
+      </div>
+
+      <section id="menu-section" aria-labelledby="menu-heading">
+        <h2 id="menu-heading">Our Menu</h2>
+        <div id="category-buttons" class="filter-section">
+          <!-- Category filter buttons will be dynamically added here -->
+        </div>
+        <div id="menu-items">
+          <!-- Menu items will be dynamically added here -->
+          <p>Loading menu...</p>
+        </div>
+      </section>
+
+      <section id="cart-section" aria-labelledby="cart-heading">
+        <h2 id="cart-heading">Your Order</h2>
+        <div id="cart-items">
+          <p>Your cart is currently empty.</p>
+        </div>
+        <div id="cart-total">Total: $<span id="total-amount">0.00</span></div>
+        <button id="temp-order-button" style="margin-top: 10px; width: 100%; padding: 10px">
+          Place Order (Test)
+        </button>
+      </section>
+
+      <footer>
+        <p>&copy; 2023 BiteBridge. All rights reserved.</p>
+      </footer>
+    </div>
+
+    <!-- Mock API Service - Should be loaded before your app logic if it patches window.fetch -->
+    <script src="mock-api/api-service.js"></script>
+
+    <!-- Application Scripts (Order Matters) -->
+    <script src="js/modules/errors.js"></script>
+    <script src="js/data/menu-data.js"></script>
+    <!-- Defines MOCK_API_KEY, menu, categories, fetchMenuData -->
+    <script src="js/modules/cart.js"></script>
+    <!-- Uses MOCK_API_KEY, menu, OrderError, handleError -->
+    <script src="js/modules/menu.js"></script>
+    <!-- Uses menu, categories, addToCart -->
+    <script src="js/app.js"></script>
+    <!-- Initializes app, calls fetchMenuData -->
+  </body>
+</html>
