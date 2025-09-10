@@ -35,31 +35,30 @@ const sword = {
   description: "A sturdy blade for combat",
 };
 
-// Basic Equipment
-const woodenShield = {
+// NEW ITEM TEMPLATES - Task 1
+const shield = {
   name: "Wooden Shield",
   type: "armor",
-  value: 8,
-  effect: 5, // Reduces damage
+  value: 8, // Cost in gold
+  effect: 5, // Protection amount
   description: "Reduces damage taken in combat",
 };
 
 const steelSword = {
   name: "Steel Sword",
-  type: "weapon",
-  value: 20,
-  effect: 20,
-  description: "A finely-crafted sword that deals serious damage",
+  type: "weapon", 
+  value: 25, // Cost in gold
+  effect: 20, // Damage amount
+  description: "A superior blade forged from steel",
 };
 
 const ironShield = {
   name: "Iron Shield",
   type: "armor",
-  value: 15,
-  effect: 10, // Better protection
-  description: "Sturdy iron shield with superior protection",
+  value: 18, // Cost in gold
+  effect: 10, // Protection amount  
+  description: "Strong iron protection for seasoned warriors",
 };
-
 
 // Create empty inventory array (from previous lab)
 let inventory = []; // Will now store item objects instead of strings
@@ -90,6 +89,23 @@ function showStatus() {
       );
     });
   }
+
+  // Show current equipment status
+  const bestWeapon = getBestItem("weapon");
+  const bestArmor = getBestItem("armor");
+  
+  console.log("\n⚔️  Current Equipment:");
+  if (bestWeapon) {
+    console.log("   Weapon: " + bestWeapon.name + " (+" + bestWeapon.effect + " damage)");
+  } else {
+    console.log("   Weapon: None");
+  }
+  
+  if (bestArmor) {
+    console.log("   Armor: " + bestArmor.name + " (+" + bestArmor.effect + " protection)");
+  } else {
+    console.log("   Armor: None");
+  }
 }
 
 /**
@@ -116,11 +132,14 @@ function showLocation() {
     );
     console.log("\nWhat would you like to do?");
     console.log("1: Buy sword (" + sword.value + " gold)");
-    console.log("2: Return to village");
-    console.log("3: Check status");
-    console.log("4: Use item");
-    console.log("5: Help");
-    console.log("6: Quit game");
+    console.log("2: Buy steel sword (" + steelSword.value + " gold)");
+    console.log("3: Buy wooden shield (" + shield.value + " gold)");
+    console.log("4: Buy iron shield (" + ironShield.value + " gold)");
+    console.log("5: Return to village");
+    console.log("6: Check status");
+    console.log("7: Use item");
+    console.log("8: Help");
+    console.log("9: Quit game");
   } else if (currentLocation === "market") {
     console.log(
       "Merchants sell their wares from colorful stalls. A potion seller catches your eye."
@@ -161,16 +180,31 @@ function hasItemType(type) {
 
 /**
  * Handles monster battles
- * Checks if player has weapon and manages combat results
+ * Uses best weapon and considers armor protection
  * @returns {boolean} true if player wins, false if they retreat
  */
 function handleCombat() {
-  // Updated to check for item type instead of specific string
-  if (hasItemType("weapon")) {
-    // Find the weapon to get its properties
-    let weapon = inventory.find((item) => item.type === "weapon");
-    console.log("You attack with your " + weapon.name + "!");
-    console.log("You deal " + weapon.effect + " damage!");
+  const bestWeapon = getBestItem("weapon");
+  const bestArmor = getBestItem("armor");
+  
+  if (bestWeapon) {
+    console.log("You attack with your " + bestWeapon.name + "!");
+    console.log("You deal " + bestWeapon.effect + " damage!");
+    
+    // Calculate damage taken (armor reduces damage)
+    let damageTaken = 15; // Base monster damage
+    if (bestArmor) {
+      damageTaken -= bestArmor.effect;
+      console.log("Your " + bestArmor.name + " absorbs " + bestArmor.effect + " damage!");
+    }
+    
+    if (damageTaken > 0) {
+      updateHealth(-damageTaken);
+      console.log("The monster hits you for " + damageTaken + " damage!");
+    } else {
+      console.log("Your armor completely protects you!");
+    }
+    
     console.log("Victory! You found 10 gold!");
     playerGold += 10;
     return true;
@@ -180,18 +214,6 @@ function handleCombat() {
     return false;
   }
 }
-
-/**
- * Determines if the player has advanced gear to face the dragon
- * @returns {boolean} - True if well-equipped
- */
-function hasGoodEquipment() {
-  const bestWeapon = getBestItem("weapon");
-  const armor = getItemsByType("armor");
-
-  return bestWeapon?.name === "Steel Sword" && armor.length > 0;
-}
-
 
 /**
  * Updates player health, keeping it between 0 and 100
@@ -218,6 +240,53 @@ function updateHealth(amount) {
 // Item Functions
 // Functions that handle item usage and inventory
 // ===========================
+
+/**
+ * Gets all items of a specific type from inventory
+ * @param {string} type The type of item to find ("weapon", "armor", "potion")
+ * @returns {Array} Array of items matching the type
+ */
+function getItemsByType(type) {
+  return inventory.filter(item => item.type === type);
+}
+
+/**
+ * Finds the best item of a specific type (highest effect value)
+ * @param {string} type The type of item to find
+ * @returns {Object|null} The best item of that type, or null if none found
+ */
+function getBestItem(type) {
+  const items = getItemsByType(type);
+  if (items.length === 0) {
+    return null;
+  }
+  
+  // Find item with highest effect value
+  let bestItem = items[0];
+  for (let i = 1; i < items.length; i++) {
+    if (items[i].effect > bestItem.effect) {
+      bestItem = items[i];
+    }
+  }
+  
+  return bestItem;
+}
+
+/**
+ * Checks if player has good enough equipment to face the dragon
+ * @returns {boolean} True if player has steel sword and any armor
+ */
+function hasGoodEquipment() {
+  // Check for steel sword specifically
+  const hasSteelSword = inventory.some(item => 
+    item.name === "Steel Sword" && item.type === "weapon"
+  );
+  
+  // Check for any armor
+  const hasAnyArmor = hasItemType("armor");
+  
+  return hasSteelSword && hasAnyArmor;
+}
 
 /**
  * Handles using items like potions
@@ -250,33 +319,15 @@ function useItem() {
     } else if (item.type === "weapon") {
       console.log("\nYou ready your " + item.name + " for battle.");
       return true;
+    } else if (item.type === "armor") {
+      console.log("\nYou equip your " + item.name + " for protection.");
+      return true;
     }
   } else {
     console.log("\nInvalid item number!");
   }
   return false;
 }
-
-/**
- * Returns all inventory items of a certain type
- * @param {string} type - The type of item (e.g., 'weapon', 'armor')
- * @returns {Array} - All items of that type
- */
-function getItemsByType(type) {
-  return inventory.filter(item => item.type === type);
-}
-
-/**
- * Gets the highest-effect item of a given type
- * @param {string} type - The type of item to search for
- * @returns {object|null} - The best item or null
- */
-function getBestItem(type) {
-  const items = getItemsByType(type);
-  if (items.length === 0) return null;
-  return items.reduce((best, item) => (item.effect > best.effect ? item : best));
-}
-
 
 /**
  * Displays the player's inventory
@@ -302,19 +353,26 @@ function checkInventory() {
 /**
  * Handles purchasing items at the blacksmith
  */
-function buyFromBlacksmith() {
-  if (playerGold >= sword.value) {
-    console.log("\nBlacksmith: 'A fine blade for a brave adventurer!'");
-    playerGold -= sword.value;
-
-    // Add sword object to inventory instead of just the name
-    inventory.push({ ...sword }); // Create a copy of the sword object
-
-    console.log(
-      "You bought a " + sword.name + " for " + sword.value + " gold!"
-    );
+function buyFromBlacksmith(itemChoice) {
+  let item = null;
+  
+  if (itemChoice === 1) {
+    item = sword;
+  } else if (itemChoice === 2) {
+    item = steelSword;
+  } else if (itemChoice === 3) {
+    item = shield;
+  } else if (itemChoice === 4) {
+    item = ironShield;
+  }
+  
+  if (item && playerGold >= item.value) {
+    console.log("\nBlacksmith: 'A fine choice for a brave adventurer!'");
+    playerGold -= item.value;
+    inventory.push({ ...item }); // Create a copy of the item object
+    console.log("You bought a " + item.name + " for " + item.value + " gold!");
     console.log("Gold remaining: " + playerGold);
-  } else {
+  } else if (item) {
     console.log("\nBlacksmith: 'Come back when you have more gold!'");
   }
 }
@@ -362,27 +420,33 @@ function showHelp() {
 
   console.log("\nBattle Information:");
   console.log("- You need a weapon to win battles");
-  console.log("- Weapons have different damage values");
+  console.log("- Better weapons deal more damage");
+  console.log("- Armor reduces damage taken from monsters");
+  console.log("- The game automatically uses your best equipment");
   console.log("- Monsters appear in the forest");
   console.log("- Without a weapon, you'll lose health when retreating");
 
   console.log("\nItem Usage:");
   console.log("- Health potions restore health based on their effect value");
-  console.log(
-    "- You can buy potions at the market for " + healthPotion.value + " gold"
-  );
-  console.log(
-    "- You can buy a sword at the blacksmith for " + sword.value + " gold"
-  );
+  console.log("- You can buy potions at the market for " + healthPotion.value + " gold");
+  console.log("- You can buy weapons and armor at the blacksmith");
+  console.log("- Equipment tiers: Sword < Steel Sword, Wooden Shield < Iron Shield");
+
+  console.log("\nShopping:");
+  console.log("- Basic sword: " + sword.value + " gold");
+  console.log("- Steel sword: " + steelSword.value + " gold");
+  console.log("- Wooden shield: " + shield.value + " gold");
+  console.log("- Iron shield: " + ironShield.value + " gold");
 
   console.log("\nOther Commands:");
-  console.log("- Choose the status option to see your health and gold");
+  console.log("- Choose the status option to see your health, gold, and equipment");
   console.log("- Choose the help option to see this message again");
   console.log("- Choose the quit option to end the game");
 
   console.log("\nTips:");
   console.log("- Keep healing potions for dangerous areas");
   console.log("- Defeat monsters to earn gold");
+  console.log("- Upgrade to better equipment as you earn more gold");
   console.log("- Health can't go above 100");
 }
 
@@ -420,7 +484,7 @@ function move(choiceNum) {
       }
     }
   } else if (currentLocation === "blacksmith") {
-    if (choiceNum === 2) {
+    if (choiceNum === 5) {
       currentLocation = "village";
       console.log("\nYou return to the village center.");
       validMove = true;
@@ -517,23 +581,23 @@ if (require.main === module) {
             console.log("\nThanks for playing!");
           }
         } else if (currentLocation === "blacksmith") {
-          if (choiceNum < 1 || choiceNum > 6) {
-            throw "Please enter a number between 1 and 6.";
+          if (choiceNum < 1 || choiceNum > 9) {
+            throw "Please enter a number between 1 and 9.";
           }
 
           validChoice = true;
 
-          if (choiceNum === 1) {
-            buyFromBlacksmith();
-          } else if (choiceNum === 2) {
-            move(choiceNum);
-          } else if (choiceNum === 3) {
-            showStatus();
-          } else if (choiceNum === 4) {
-            useItem();
+          if (choiceNum >= 1 && choiceNum <= 4) {
+            buyFromBlacksmith(choiceNum);
           } else if (choiceNum === 5) {
-            showHelp();
+            move(choiceNum);
           } else if (choiceNum === 6) {
+            showStatus();
+          } else if (choiceNum === 7) {
+            useItem();
+          } else if (choiceNum === 8) {
+            showHelp();
+          } else if (choiceNum === 9) {
             gameRunning = false;
             console.log("\nThanks for playing!");
           }
