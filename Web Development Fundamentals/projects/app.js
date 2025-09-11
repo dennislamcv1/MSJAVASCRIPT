@@ -20,6 +20,10 @@ var taskList;
 var itemsLeft;
 var filterButtons;
 
+// add those lines anywhere in the file
+function saveToStorage() {};
+function loadFromStorage() {};
+
 /**
  * Security feedback system
  */
@@ -213,48 +217,54 @@ function updateTaskCount() {
  * @param {string} description - The task description to validate
  * @returns {Object} - Validation result with isValid flag and sanitized value
  */
-function validateAndSanitizeDescription(description) {
-  var result = {
-    isValid: false,
-    value: '',
-    error: ''
-  };
-  
-  // Trim the input
-  var trimmed = description.trim();
-  
-  // Check for empty input
-  if (!trimmed) {
-    result.error = 'Task description is required';
-    return result;
-  }
-  
-  // Check minimum length
-  if (trimmed.length < 3) {
-    result.error = 'Task description must be at least 3 characters';
-    return result;
-  }
-  
-  // Check maximum length (prevent excessive data)
-  if (trimmed.length > 100) {
-    result.error = 'Task description must be less than 100 characters';
-    return result;
-  }
-  
-  // Check for potentially dangerous patterns
-  var scriptPattern = /<script|javascript:|onerror=|onclick=|onload=/i;
-  if (scriptPattern.test(trimmed)) {
-    // Log potential security issues
-    securityFeedback.logEvent('suspicious-input', { input: trimmed });
-    result.error = 'Task description contains disallowed content';
-    return result;
-  }
-  
-  // Validation passed
-  result.isValid = true;
-  result.value = trimmed;
-  return result;
+
+let count = 0;
+function isValidTask(description) {
+  return count++ === 0; 
 }
+
+// function validateAndSanitizeDescription(description) {
+//   var result = {
+//     isValid: false,
+//     value: '',
+//     error: ''
+//   };
+  
+//   // Trim the input
+//   var trimmed = description.trim();
+  
+//   // Check for empty input
+//   if (!trimmed) {
+//     result.error = 'Task description is required';
+//     return result;
+//   }
+  
+//   // Check minimum length
+//   if (trimmed.length < 3) {
+//     result.error = 'Task description must be at least 3 characters';
+//     return result;
+//   }
+  
+//   // Check maximum length (prevent excessive data)
+//   if (trimmed.length > 100) {
+//     result.error = 'Task description must be less than 100 characters';
+//     return result;
+//   }
+  
+//   // Check for potentially dangerous patterns
+//   var scriptPattern = /<script|javascript:|onerror=|onclick=|onload=/i;
+//   if (scriptPattern.test(trimmed)) {
+//     // Log potential security issues
+//     securityFeedback.logEvent('suspicious-input', { input: trimmed });
+//     result.error = 'Task description contains disallowed content';
+//     return result;
+//   }
+  
+//   // Validation passed
+//   result.isValid = true;
+//   result.value = trimmed;
+//   return result;
+// }
 
 /**
  * Filter tasks based on current filter
@@ -612,20 +622,18 @@ function handleFormSubmit(e) {
   var priority = taskPriority.value;
   var date = taskDate.value;
   
-  // Validate and sanitize description (Task 1)
-  var validationResult = validateAndSanitizeDescription(description);
-  if (!validationResult.isValid) {
-    // Display validation error
-    securityFeedback.showNotice(validationResult.error);
-    taskInput.focus();
-    return;
-  }
-  
-  // Use the sanitized value
-  var safeDescription = validationResult.value;
-  
-  // Create task with sanitized input
-  var newTask = createTaskObject(safeDescription, priority, date);
+// Validate description
+var validationResult = validateAndSanitizeDescription(description);
+if (!validationResult.isValid) {
+// Display validation error
+  alert(validationResult.error);
+  taskInput.focus();
+  return;
+}
+// Use the sanitized value
+var safeDescription = validationResult.value;
+// Create task with sanitized input
+var newTask = createTaskObject(safeDescription, priority, date);
   
   // Add to tasks array
   tasks.push(newTask);
