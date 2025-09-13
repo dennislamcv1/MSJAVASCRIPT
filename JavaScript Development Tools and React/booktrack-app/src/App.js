@@ -4,6 +4,7 @@ import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import AddBookForm from './components/AddBookForm';
 import BookList from './components/BookList';
+import './components.css'; // Import shared component styles
 
 function App() {
   const [books, setBooks] = useState([]);

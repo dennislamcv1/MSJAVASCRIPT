@@ -1,0 +1,34 @@
+{
+  "books": [
+    {
+      "id": "1",
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "year": 1925,
+      "genre": "Literary Fiction",
+      "status": "finished",
+      "progress": 180,
+      "totalPages": 412
+    },
+    {
+      "id": "2",
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "year": 1960,
+      "genre": "Southern Gothic",
+      "status": "reading",
+      "progress": 150,
+      "totalPages": 324
+    },
+    {
+      "id": "3",
+      "title": "1984",
+      "author": "George Orwell",
+      "year": 1949,
+      "genre": "Dystopian",
+      "status": "to-read",
+      "progress": 0,
+      "totalPages": 328
+    }
+  ]
+}

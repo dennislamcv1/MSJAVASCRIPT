@@ -1,0 +1,19 @@
+{
+  "name": "booktrack-app",
+  
+  "dependencies": {
+    
+    "prop-types": "^15.8.1" 
+  },
+  "devDependencies": {
+    "json-server": "^0.17.4" 
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "api": "json-server --watch db.json --port 3001"
+  }
+  
+}
